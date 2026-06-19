@@ -1,0 +1,39 @@
+groups:
+  - name: duoqueue_alerts
+    rules:
+
+      - alert: HighQueueDepth
+        expr: duoqueue_queue_depth > 50
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Matchmaking queue depth is high"
+          description: "Queue depth has been above 50 for more than 2 minutes (current value: {{ $value }})"
+
+      - alert: HighEndpointLatency
+        expr: duoqueue_endpoint_latency_seconds > 2
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Endpoint latency is high"
+          description: "An endpoint has been responding slowly for over 1 minute (current value: {{ $value }}s)"
+
+      - alert: NoActiveSessions
+        expr: duoqueue_active_sessions == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "No active sessions detected"
+          description: "DuoQueue has had zero active sessions for 5 minutes — app may be down"
+
+      - alert: NoMatchesBeingMade
+        expr: rate(duoqueue_matches_total[5m]) == 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "No matches being made"
+          description: "The matchmaking system has not created any matches in the last 10 minutes"

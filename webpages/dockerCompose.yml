@@ -1,0 +1,103 @@
+version: "3.8"
+
+services:
+
+  app:
+    build: .
+    container_name: duoqueue_app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: duoqueue
+      DB_USER: duoqueue
+      DB_PASS: secret
+    depends_on:
+      - db
+    networks:
+      - duoqueue
+
+  db:
+    image: mysql:8.0
+    container_name: duoqueue_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: duoqueue
+      MYSQL_USER: duoqueue
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - duoqueue
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: duoqueue_prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.enable-lifecycle"
+    networks:
+      - duoqueue
+
+  pushgateway:
+    image: prom/pushgateway:latest
+    container_name: duoqueue_pushgateway
+    restart: unless-stopped
+    ports:
+      - "9091:9091"
+    networks:
+      - duoqueue
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: duoqueue_alertmanager
+    restart: unless-stopped
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+    networks:
+      - duoqueue
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: duoqueue_grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_PROVISIONING_PATH: /etc/grafana/provisioning
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+    networks:
+      - duoqueue
+
+volumes:
+  db_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  duoqueue:
+    driver: bridge
