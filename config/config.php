@@ -1,10 +1,10 @@
 <?php
 
-$DB_HOST = "localhost";
-$DB_NAME = "my_database";
-$DB_USER = "duo_queue_admin";
-$DB_PASS = "gamingforever123";
-$DB_PORT = 3306;
+$DB_HOST = getenv('DB_HOST') ?: 'localhost';
+$DB_NAME = getenv('DB_NAME') ?: 'my_database';
+$DB_USER = getenv('DB_USER') ?: 'duo_queue_admin';
+$DB_PASS = getenv('DB_PASS') ?: 'gamingforever123';
+$DB_PORT = getenv('DB_PORT') ?: 3306;
 
 $DB_DSN = "mysql:host=$DB_HOST;dbname=$DB_NAME;port=$DB_PORT;charset=utf8mb4";
 
