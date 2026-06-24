@@ -59,5 +59,9 @@ $stmt = $pdo->prepare("
 ");
 $stmt->execute([$match_id, $message, $user_id, $receiver_id]);
 
+require_once '../config/Metrics.php';
+$metrics = new Metrics();
+$metrics->counter('duoqueue_messages_total', 1, 'Total messages sent');
+
 echo json_encode(['success' => true]);
 exit;

@@ -6,7 +6,7 @@
     <title>DuoQueue - About Us</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/arcade-theme.css">
+    <link rel="stylesheet" href="/assets/arcade-theme.css">
 </head>
 
 <body>
@@ -30,7 +30,7 @@
                 <div class="neon-box neon-box-lg p-4 text-center">
                     <div class="neon-box neon-box-lg p-4 text-center" style="font-size: clamp(8px, 1vw, 11px);">
                         <h3>About Us</h3>
-                        <img src="../assets/team.png" alt="Team Image" class="team-image mb-3">
+                        <img src="/assets/team.png" alt="Team Image" class="team-image mb-3">
                         <p>
                             DuoQueue is a dating site built for gamers, by gamers.
                         </p>

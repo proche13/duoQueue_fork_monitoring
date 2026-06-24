@@ -131,7 +131,7 @@ unset($_SESSION['error']);
     <title>DuoQueue - My Duos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/arcade-theme.css">
+    <link rel="stylesheet" href="/assets/arcade-theme.css">
 </head>
 
 <body>
@@ -175,7 +175,7 @@ unset($_SESSION['error']);
             <div class="flex-grow-1 d-flex flex-column overflow-hidden">
 
                 <div class="d-flex align-items-center flex-wrap gap-2 p-2 flex-shrink-0" style="border-bottom: 3px solid var(--cyan); min-height: 60px;">
-                    <img src="<?= $other_user_photo ? htmlspecialchars($other_user_photo) : '../assets/profile.jpg' ?>" class="profile-pic">
+                    <img src="<?= $other_user_photo ? htmlspecialchars($other_user_photo) : '/assets/profile.jpg' ?>" class="profile-pic">
                     <span class="flex-grow-1" style="font-size: 10px; margin-left: 10px;">
                         <?= htmlspecialchars($other_user_name) ?>
                     </span>

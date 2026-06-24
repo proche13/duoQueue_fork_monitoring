@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html:z
     environment:
       DB_HOST: db
       DB_PORT: 3306

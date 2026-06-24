@@ -60,6 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['liked_user_id'])) {
 
         $pdo->commit();
 
+        require_once '../config/Metrics.php';
+        $metrics = new Metrics();
+        if ($isMatch) {
+            $metrics->counter('duoqueue_matches_total', 1, 'Total matches made');
+        }
+        $metrics->counter('duoqueue_likes_total', 1, 'Total likes given');
+
         if ($isMatch) {
             header("Location: matchmake.php?matched=true&name=" . urlencode($matchedUserName));
         } else {

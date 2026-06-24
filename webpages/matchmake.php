@@ -141,6 +141,13 @@ foreach ($excludeParams as $param => $value) {
 $stmt->execute();
 $potentialMatch = $stmt->fetch(PDO::FETCH_ASSOC);
 $stmt->closeCursor();
+
+require_once '../config/Metrics.php';
+$metrics = new Metrics();
+$queueDepth = $potentialMatch ? 1 : 0;
+$metrics->gauge('duoqueue_queue_depth', $queueDepth, 'Matchmaking queue depth');
+$sessionCount = (int) $pdo->query("SELECT COUNT(*) FROM matches")->fetchColumn();
+$metrics->gauge('duoqueue_active_sessions', $sessionCount, 'Total active matches');
 ?>
 
 <!DOCTYPE html>
@@ -151,7 +158,7 @@ $stmt->closeCursor();
     <title>DuoQueue - Matchmake</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/arcade-theme.css">
+    <link rel="stylesheet" href="/assets/arcade-theme.css">
 </head>
 
 <body>
