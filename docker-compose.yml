@@ -85,7 +85,7 @@ services:
       GF_PROVISIONING_PATH: /etc/grafana/provisioning
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:z
     depends_on:
       - prometheus
     networks:
